@@ -616,3 +616,22 @@
   [^{:tag cgen/dup-readable} o]
   (when-not (= o %)
     (throw (ex-info "Value cannot roundtrip, see ex-data" {:printed o :read %}))))
+
+(deftest feature-expressions
+  (testing "#+"
+    (testing "with symbol"
+      (is (= ["x"] [#+clj "x"]))
+      (is (= [] [#+cljs "x"])))
+    (testing "with unreadable forms"
+      (is (= [] [#+cljs #js {:foo "bar"}]))
+      (is (= [] [#+cljs #js [1 2 3]]))
+      (is (= ["x"] [#+cljs [:foo #bar 123 :baz] #+clj "x"]))))
+  (testing "#-"
+    (testing "with symbol"
+      (is (= [] [#-clj "x"]))
+      (is (= ["x"] [#-cljs "x"]))))
+  (testing "binding around read"
+    (is (= [:x] (read {:features #{:custom}} (java.io.PushbackReader. (java.io.StringReader. "[#+custom :x]"))))))
+  (testing "bad feature expressions"
+    (is (thrown-with-msg? RuntimeException #"Invalid feature expression: 5"
+                          (read-string "[#+5 5]")))))
