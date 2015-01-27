@@ -630,6 +630,8 @@
            (read-str-opts {:preserve-read-cond true} "(#?@ :foo [:bar :baz])")))
     (is (= '(clojure.core/read-cond :foo :bar)
            (read-str-opts {:preserve-read-cond true} "(clojure.core/read-cond :foo :bar)"))))
+  (testing "read non-reader-macro read-cond"
+    (is (= :x (read-str-opts {:preserve-read-cond false} "(clojure.core/read-cond :clj :x :default :y)"))))
   (testing "basic read-cond"
     (is (= '[foo-form]
            (read-str-opts {:features #{:foo}} "[(#? :foo foo-form :bar bar-form)]")))

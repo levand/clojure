@@ -1295,7 +1295,7 @@ public static class ConditionalReader extends AFn {
 			return false;
 
 		Object first = list.get(0);
-		return (first == READ_COND || first == READ_COND_SPLICING);
+		return (READ_COND.equals(first) || READ_COND_SPLICING.equals(first));
 	}
 
 	public static boolean hasFeature(Object feature, Object opts) {
