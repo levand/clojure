@@ -170,7 +170,7 @@ static public Object read(PushbackReader r, boolean eofIsError, Object eofValue,
 	return read(r, eofIsError, eofValue, isRecursive, opts, new LinkedList());
 }
 
-static public Object read(PushbackReader r, boolean eofIsError, Object eofValue, boolean isRecursive, Object opts, Object pendingForms)
+static private Object read(PushbackReader r, boolean eofIsError, Object eofValue, boolean isRecursive, Object opts, Object pendingForms)
 {
 	if(RT.READEVAL.deref() == UNKNOWN)
 		throw Util.runtimeException("Reading disallowed - *read-eval* bound to :unknown");
