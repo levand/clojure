@@ -651,6 +651,15 @@
     (is (= [:a] [(#?@ :clj [:a])]))
     (is (= [:a :b] [(#?@ :clj [:a :b])]))
     (is (= [:a :b :c] [(#?@ :clj [:a :b :c])])))
+  (testing "nested read-cond-splicing"
+     (is (= [:a :b :c :d :e]
+            [(#?@ :clj [:a (#?@ :clj [:b (#?@ :clj [:c]) :d]):e])]))
+     (is (= '(+ 1 (+ 2 3))
+            '(+ (#?@ :clj [1 (+ (#?@ :clj [2 3]))]))))
+     (is (= '(+ (+ 2 3) 1)
+            '(+ (#?@ :clj [(+ (#?@ :clj [2 3])) 1]))))
+     (is (= [:a [:b [:c] :d] :e]
+                 [(#?@ :clj [:a [(#?@ :clj [:b (#?@ :clj [[:c]]) :d])] :e])])))
   (testing "error cases"
     (is (thrown-with-msg? RuntimeException #"Invalid feature condition" (read-string "(#? (+ 1 2) :a)")))
     (is (thrown-with-msg? RuntimeException #"even number of forms" (read-string "(#? :cljs :a :clj)")))
