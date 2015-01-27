@@ -595,20 +595,20 @@ public static class VarReader extends AFn{
 /*
 static class DerefReader extends AFn{
 
-	public Object invoke(Object reader, Object quote, Object opts) {
+	public Object invoke(Object reader, Object quote) {
 		PushbackReader r = (PushbackReader) reader;
 		int ch = read1(r);
 		if(ch == -1)
 			throw Util.runtimeException("EOF while reading character");
 		if(ch == '!')
 			{
-			Object o = read(r, true, null, true, opts);
+			Object o = read(r, true, null, true);
 			return RT.list(DEREF_BANG, o);
 			}
 		else
 			{
 			r.unread(ch);
-			Object o = read(r, true, null, true, opts);
+			Object o = read(r, true, null, true);
 			return RT.list(DEREF, o);
 			}
 	}
@@ -1010,12 +1010,12 @@ public static class ListReader extends AFn{
 static class CtorReader extends AFn{
 	static final Symbol cls = Symbol.intern("class");
 
-	public Object invoke(Object reader, Object leftangle, Object opts) {
+	public Object invoke(Object reader, Object leftangle) {
 		PushbackReader r = (PushbackReader) reader;
 		// #<class classname>
 		// #<classname args*>
 		// #<classname/staticMethod args*>
-		List list = readDelimitedList('>', r, true, opts);
+		List list = readDelimitedList('>', r, true);
 		if(list.isEmpty())
 			throw Util.runtimeException("Must supply 'class', classname or classname/staticMethod");
 		Symbol s = (Symbol) list.get(0);
@@ -1082,9 +1082,9 @@ public static class EvalReader extends AFn{
 }
 
 //static class ArgVectorReader extends AFn{
-//	public Object invoke(Object reader, Object leftparen, Object opts) {
+//	public Object invoke(Object reader, Object leftparen) {
 //		PushbackReader r = (PushbackReader) reader;
-//		return ArgVector.create(readDelimitedList('|', r, true, opts));
+//		return ArgVector.create(readDelimitedList('|', r, true));
 //	}
 //
 //}
