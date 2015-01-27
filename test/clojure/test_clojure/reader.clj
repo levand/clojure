@@ -651,6 +651,9 @@
     (is (= [:a] [(#?@ :clj [:a])]))
     (is (= [:a :b] [(#?@ :clj [:a :b])]))
     (is (= [:a :b :c] [(#?@ :clj [:a :b :c])])))
-
-
-  )
+  (testing "error cases"
+    (is (thrown-with-msg? RuntimeException #"Invalid feature condition" (read-string "(#? (+ 1 2) :a)")))
+    (is (thrown-with-msg? RuntimeException #"even number of forms" (read-string "(#? :cljs :a :clj)")))
+    (is (thrown-with-msg? RuntimeException #"must be the last form" (read-string "(#? :default :a :clj :b)")))
+    (is (thrown-with-msg? RuntimeException #"read-cond-splicing must implement" (read-string "(#?@ :clj :a)")))
+    (is (thrown-with-msg? RuntimeException #"is reserved" (read-string "(#?@ :foo :a :else :b)")))))
