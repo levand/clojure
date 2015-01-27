@@ -1282,11 +1282,12 @@ static final Keyword PRESERVE_READ_COND = Keyword.intern(null,"preserve-read-con
 
 public static class ConditionalReader extends AFn {
 
-	final static public IPersistentSet ELSE_FEATURE_SYNONYMS = RT.set(
+	final static public IPersistentSet RESERVED_FEATURES = RT.set(
 			Keyword.intern(null, "else"),
-			Keyword.intern(null, "none"),
-			Keyword.intern(null, "default")
+			Keyword.intern(null, "none")
 	);
+
+	final static public Keyword DEFAULT = Keyword.intern(null, "default");
 
 	public static boolean shouldReadConditionally(List list, Object opts) {
 
@@ -1301,7 +1302,10 @@ public static class ConditionalReader extends AFn {
 		if (! (feature instanceof Keyword))
 	            throw Util.runtimeException("Invalid feature condition: " + feature);
 
-		if(ELSE_FEATURE_SYNONYMS.contains(feature))
+		if(RESERVED_FEATURES.contains(feature))
+			throw Util.runtimeException("Feature name " + feature + " is reserved.");
+
+		if(DEFAULT.equals(feature))
 			return true;
 
 		// Check startup features
@@ -1325,7 +1329,7 @@ public static class ConditionalReader extends AFn {
 				throw Util.runtimeException("read-cond requires an even number of forms.");
 			Object form = it.next();
 
-			if(ELSE_FEATURE_SYNONYMS.contains(feature) && it.hasNext())
+			if(DEFAULT.equals(feature) && it.hasNext())
 				throw Util.runtimeException(String.format("%s feature must be the last form in read-cond or read-cond-splicing", feature.toString()));
 
 			if(hasFeature(feature, opts)) {

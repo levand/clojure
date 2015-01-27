@@ -643,9 +643,7 @@
     (is (= "clojure" (#? :clj "clojure" :cljs "clojurescript"))))
   (testing "else-features"
     (is (= "clojure" (#? :clj "clojure" :default "default")))
-    (is (= "default" (#? :foo "foobar" :default "default")))
-    (is (= "default" (#? :foo "foobar" :else "default")))
-    (is (= "default" (#? :foo "foobar" :none "default"))))
+    (is (= "default" (#? :foo "foobar" :default "default"))))
   (testing "read-cond-splicing"
     (is (= [] [(#?@ :clj [])]))
     (is (= [:a] [(#?@ :clj [:a])]))
