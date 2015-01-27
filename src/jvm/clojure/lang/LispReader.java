@@ -1139,9 +1139,10 @@ public static List readDelimitedList(char delim, PushbackReader r, boolean isRec
 	for(; ;)
 		{
 
-		List pendingFormList = (pendingForms instanceof List) ? (List)pendingForms : new LinkedList();
-			while(!pendingFormList.isEmpty()){
-			a.add(pendingFormList.remove(0));
+		if (pendingForms instanceof List) {
+			while (! ((List) pendingForms).isEmpty()) {
+				a.add(((List) pendingForms).remove(0));
+			}
 		}
 
 		int ch = read1(r);
