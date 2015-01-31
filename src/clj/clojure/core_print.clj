@@ -392,3 +392,15 @@
                                             @o)), w))
 
 (def ^{:private true} print-initialized true)
+
+(defmethod print-method clojure.lang.TaggedLiteral [o ^Writer w]
+  (.write w "#")
+  (print-method (:tag o) w)
+  (print-method (:form o) w))
+
+(defmethod print-method clojure.lang.ReaderConditional [o ^Writer w]
+  (.write w "#?")
+  (when (:splicing? o) (.write w "@"))
+  (print-method (:form o) w))
+
+(def ^{:private true} print-initialized true)

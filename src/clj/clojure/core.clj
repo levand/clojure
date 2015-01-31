@@ -7353,6 +7353,34 @@
   [proc coll]
   (reduce #(proc %2) nil coll))
 
+
+(defn tagged-literal?
+  "Return true if the value is the data representation of a tagged literal"
+  {:added "1.7"}
+  [value]
+  (instance? clojure.lang.TaggedLiteral value))
+
+(defn tagged-literal
+  "Construct a data representation of a tagged literal"
+  {:added "1.7"}
+  [^clojure.lang.Symbol tag form]
+  (clojure.lang.TaggedLiteral. tag form))
+
+(defn reader-conditional?
+  "Return true if the value is the data representation of a reader conditional"
+  {:added "1.7"}
+  [value]
+  (instance? clojure.lang.ReaderConditional value))
+
+(defn reader-conditional
+  "Construct a data representation of a reader conditional"
+  {:added "1.7"}
+  [form ^Boolean splicing?]
+  (clojure.lang.ReaderConditional. form splicing?))
+
+
+
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; data readers ;;;;;;;;;;;;;;;;;;
 
 (def ^{:added "1.4"} default-data-readers
